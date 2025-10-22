@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Inline SVG Icons -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+        </symbol>
+        <symbol id="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </symbol>
+        <symbol id="icon-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </symbol>
+        <symbol id="icon-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>
+        </symbol>
+    </svg>
+    
+    <title>Sacrament of Matrimony - Tabbed Layout</title>
+
+    <style>
+        /* --- Tabbed Layout --- */
+
+        :root {
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Poppins', sans-serif;
+            --color-text: #444;
+            --color-text-light: #666;
+            --color-accent1: #56a1d5; /* Original Blue */
+            --color-accent2: #e3c16f; /* Champagne Gold */
+            --color-bg: #ffffff;
+            --color-bg-alt: #f9f9fa;
+            --border-color: #eee;
+        }
+
+        /* 0. BASE STYLES */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--color-bg);
+            font-family: var(--font-body);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .mat-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 80px 0;
+            overflow: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: #222;
+        }
+        
+        h2 { font-size: 2.75rem; text-align: center; margin-bottom: 20px; }
+        h3 { font-size: 1.5rem; }
+        
+        /* 1. HEADER */
+        .mat-tabs-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .mat-tabs-header h1 {
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+        }
+        .mat-tabs-header p {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 2. TAB NAVIGATION */
+        .mat-tabs-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+        
+        .tab-button {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 12px 25px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            color: var(--color-text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            transform: translateY(1px); /* Align with border */
+        }
+        
+        .tab-button:hover {
+            color: #000;
+        }
+        
+        .tab-button.is-active {
+            color: var(--color-accent1);
+            border-bottom-color: var(--color-accent1);
+        }
+
+        /* 3. TAB CONTENT PANELS */
+        .mat-tab-panel {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .mat-tab-panel.is-active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 4. RE-USABLE STYLES FOR PANELS */
+        
+        /* --- Panel 1: Journey --- */
+        .mat-journey-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding-top: 20px;
+        }
+        .mat-journey-step {
+            text-align: center;
+            background-color: var(--color-bg-alt);
+            padding: 30px;
+            border-radius: 8px;
+            border-bottom: 3px solid var(--color-accent1);
+        }
+        .mat-journey-step:nth-child(2),
+        .mat-journey-step:nth-child(4) {
+            border-bottom-color: var(--color-accent2);
+        }
+        .mat-journey-step-icon {
+            width: 50px;
+            height: 50px;
+            color: var(--color-accent1);
+            margin-bottom: 15px;
+        }
+        .mat-journey-step:nth-child(2) .mat-journey-step-icon,
+        .mat-journey-step:nth-child(4) .mat-journey-step-icon {
+            color: var(--color-accent2);
+        }
+        .mat-journey-step h3 {
+            font-size: 1.3rem;
+            margin: 0 0 10px 0;
+        }
+        .mat-journey-step p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            margin: 0;
+        }
+
+        /* --- Panel 2: Agenda --- */
+        .mat-agenda-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+        .mat-agenda-info h3 { margin-top: 0; font-style: italic; font-weight: 400; }
+        .mat-agenda-info p { margin-bottom: 20px; }
+        .agenda-cost { font-size: 1.1rem; font-weight: 500; color: #222; }
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-primary {
+            background-color: var(--color-accent1);
+            color: #fff;
+            border-color: var(--color-accent1);
+        }
+        .btn-primary:hover {
+            background-color: #fff;
+            color: var(--color-accent1);
+        }
+        .mat-agenda-schedule h3 { margin-top: 0; margin-bottom: 20px; }
+        .agenda-toggle {
+            background-color: var(--color-bg-alt);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .agenda-toggle summary {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #222;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            list-style: none;
+        }
+        .agenda-toggle summary::-webkit-details-marker { display: none; }
+        .agenda-toggle summary::after {
+            content: '+';
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-accent1);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+        .agenda-toggle[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+        .agenda-details { padding: 0 20px 20px 20px; }
+        .agenda-details ul { list-style-type: none; padding-left: 0; margin: 0; }
+        .agenda-details li { padding: 8px 0; border-bottom: 1px dashed var(--border-color); }
+        .agenda-details li:last-child { border-bottom: none; }
+        .agenda-details li span { font-style: italic; color: var(--color-text-light); font-size: 0.85rem; }
+
+        /* --- Panel 3: Team --- */
+        .mat-team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            padding-top: 20px;
+        }
+        .mat-team-card {
+            background-color: var(--color-bg-alt);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        .mat-team-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transform: translateY(-5px);
+        }
+        .mat-team-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .mat-team-card-info { text-align: left; }
+        .mat-team-card-info h3 { font-size: 1.25rem; margin: 0 0 10px 0; }
+        .mat-team-card-info p {
+            font-size: 0.9rem;
+            margin: 4px 0;
+            color: var(--color-text-light);
+            line-height: 1.6;
+        }
+        .mat-team-card-info p strong { color: var(--color-text); font-weight: 500; }
+
+        /* --- Panel 4: Q&A --- */
+        .mat-faq-container { padding-top: 20px; max-width: 900px; margin: 0 auto; }
+        .mat-faq-item {
+            background-color: var(--color-bg-alt);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+        .mat-faq-q { list-style: none; }
+        .mat-faq-q::-webkit-details-marker { display: none; }
+        .mat-faq-q {
+            font-family: var(--font-body);
+            font-weight: 500;
+            color: #222;
+            font-size: 1.1rem;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        .mat-faq-q::after {
+            content: '+';
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--color-accent1);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+        .mat-faq-item[open] .mat-faq-q::after { transform: translateY(-50%) rotate(45deg); }
+        .mat-faq-a { padding: 0 20px 20px 20px; }
+        
+        /* 5. FINAL CTA */
+        .mat-cta-section {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+        }
+        .mat-cta-section h2 {
+            color: #fff;
+            font-style: italic;
+            font-weight: 400;
+            margin: 0 0 15px 0;
+        }
+        .mat-cta-section p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin: 0 0 25px 0;
+            font-weight: 300;
+        }
+        .btn-cta {
+            background-color: var(--color-accent2);
+            color: #333;
+            border-color: var(--color-accent2);
+            font-size: 1.1rem;
+            padding: 15px 30px;
+        }
+        .btn-cta:hover {
+            background-color: transparent;
+            color: var(--color-accent2);
+        }
+
+        /* 6. RESPONSIVE DESIGN */
+        @media (max-width: 992px) {
+            .mat-journey-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .mat-agenda-grid {
+                grid-template-columns: 1fr;
+            }
+            .mat-team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h2 { font-size: 2.25rem; }
+            section { padding: 60px 0; }
+            
+            .mat-tabs-header h1 { font-size: 2.5rem; }
+            .mat-tabs-header p { font-size: 1rem; }
+            .mat-tabs-nav { margin-bottom: 20px; }
+            .tab-button { font-size: 0.9rem; padding: 10px 15px; }
+
+            .mat-journey-grid {
+                grid-template-columns: 1fr;
+            }
+            .mat-team-card {
+                flex-direction: column;
+                padding: 0;
+            }
+            .mat-team-card img {
+                width: 100%;
+                height: 250px;
+                border-radius: 8px 8px 0 0;
+            }
+            .mat-team-card-info {
+                padding: 25px;
+                text-align: center;
+            }
+            .mat-team-card-info p { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="mat-tabs-section">
+        <div class="mat-container">
+
+            <header class="mat-tabs-header">
+                <h1>Your Journey to "I Do!"</h1>
+                <p>Preparing for your marriage is one of the most exciting times in your life. Here's a simple guide to the process.</p>
+            </header>
+
+            <nav class="mat-tabs-nav">
+                <button class="tab-button is-active" data-tab="panel-1">Your Journey</button>
+                <button class="tab-button" data-tab="panel-2">The Weekend</button>
+                <button class="tab-button" data-tab="panel-3">Your Guides</button>
+                <button class="tab-button" data-tab="panel-4">Q&A</button>
+            </nav>
+
+            <div class="mat-tabs-content">
+                
+                <!-- Panel 1: Your Journey -->
+                <div class="mat-tab-panel is-active" id="panel-1">
+                    <div class="mat-journey-grid">
+                        <div class="mat-journey-step">
+                            <svg class="mat-journey-step-icon"><use href="#icon-calendar"></use></svg>
+                            <h3>1. Let's Set a Date!</h3>
+                            <p>Contact the parish office (ideally 8-12 months out) to chat about your desired date and get the ball rolling.</p>
+                        </div>
+                        <div class="mat-journey-step">
+                            <svg class="mat-journey-step-icon"><use href="#icon-chat"></use></svg>
+                            <h3>2. Meet & Greet</h3>
+                            <p>You'll have a friendly, casual meeting with Fr. James to talk about your journey, the sacrament, and any questions.</p>
+                        </div>
+                        <div class="mat-journey-step">
+                            <svg class="mat-journey-step-icon"><use href="#icon-heart"></use></svg>
+                            <h3>3. The Prep Weekend</h3>
+                            <p>Join other couples for an engaging weekend of growth and fun. (Next Session: Mar 27-28, 2026)</p>
+                        </div>
+                        <div class="mat-journey-step">
+                            <svg class="mat-journey-step-icon"><use href="#icon-music"></use></svg>
+                            <h3>4. Plan Your Celebration</h3>
+                            <p>Meet again to choose the sacred readings and music that make your wedding liturgy uniquely *yours*.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: The Weekend -->
+                <div class="mat-tab-panel" id="panel-2">
+                    <div class="mat-agenda-grid">
+                        <div class="mat-agenda-info">
+                            <h3>Your Weekend at a Glance</h3>
+                            <p>This is the heart of your preparation. It's not a lecture series—it's a vibrant, engaging experience led by couples who've been where you are. It's a chance to invest in your relationship and build a foundation for a lifetime.</p>
+                            <p class="agenda-cost">Registration Fee: $120 per couple</p>
+                            <p style="font-size: 0.9rem; color: var(--color-text-light);">(Covers all materials, books, food, and refreshments)</p>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfjMseoJQVDCTdbiBII6NCDYVAgJWuYvBc1mLUZ1sW5D3-2Nw/viewform" class="btn btn-primary" target="_blank">Register for 2026</a>
+                        </div>
+                        <div class="mat-agenda-schedule">
+                            <h3>Weekend Schedule</h3>
+                            <details class="agenda-toggle" open>
+                                <summary>Friday, March 27, 2026</summary>
+                                <div class="agenda-details">
+                                    <ul>
+                                        <li><strong>6:00pm</strong> - Check In & Pizza</li>
+                                        <li>Welcome</li>
+                                        <li>Fr. James - The Liturgy of Marriage</li>
+                                        <li>Foundation for Marriage</li>
+                                        <li>Candlelight Service</li>
+                                        <li><strong>10:00pm</strong> - Wine and Cheese Social</li>
+                                    </ul>
+                                </div>
+                            </details>
+                            <details class="agenda-toggle">
+                                <summary>Saturday, March 28, 2026</summary>
+                                <div class="agenda-details">
+                                    <ul>
+                                        <li><strong>8:30am</strong> - Continental Breakfast</li>
+                                        <li>Faith in Marriage <span>(followed by a break)</span></li>
+                                        <li>Communication</li>
+                                        <li>Lunch</li>
+                                        <li>Intimacy <span>(followed by a break)</span></li>
+                                        <li>Managing Money</li>
+                                        <li>Wrap Up & Evaluations</li>
+                                        <li><strong>5:00pm</strong> - Mass</li>
+                                        <li>Blessing & Presentation of Certificates</li>
+                                    </ul>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 3: Your Guides -->
+                <div class="mat-tab-panel" id="panel-3">
+                    <div class="mat-team-grid">
+                        <div class="mat-team-card">
+                            <img src="https://www.stagnesrc.ca/uploads/1/3/1/0/131095491/published/d-a-copy-cut.jpg?1718647690" alt="Debbie and Andrew Migay">
+                            <div class="mat-team-card-info">
+                                <h3>Debbie & Andrew Migay</h3>
+                                <p><strong>Married in:</strong> 1995?</p>
+                                <p><strong>Number of Children:</strong> 3</p>
+                                <p><strong>Relevant Experience:</strong> Debbie is a professional marriage councillor, and Andrew is a doctor.</p>
+                            </div>
+                        </div>
+                        <div class="mat-team-card">
+                            <img src="https://www.stagnesrc.ca/uploads/1/3/1/0/131095491/published/img-5170.jpg?1749691908" alt="Kim and Tanner Coursolle">
+                            <div class="mat-team-card-info">
+                                <h3>Kim & Tanner Coursolle</h3>
+                                <p><strong>Married in:</strong> 2014</p>
+                                <p><strong>Number of Children:</strong> 4</p>
+                                <p><strong>Relevant Experience:</strong> Both are teachers and chaplains, specializing in faith education.</p>
+                            </div>
+                        </div>
+                        <div class="mat-team-card">
+                            <img src="https://www.stagnesrc.ca/uploads/1/3/1/0/131095491/published/img-0213.jpg?1749692071" alt="Rosie and Alex North">
+                            <div class="mat-team-card-info">
+                                <h3>Rosie & Alex North</h3>
+                                <p><strong>Married in:</strong> 2012</p>
+                                <p><strong>Number of Children:</strong> 2</p>
+                                <p><strong>Relevant Experience:</strong> Rosie (a doctor) and Alex (a teacher) know all about managing family and career.</p>
+                            </div>
+                        </div>
+                        <div class="mat-team-card">
+                            <img src="https://www.stagnesrc.ca/uploads/1/3/1/0/131095491/published/carlina-andrew.jpg?1749692066" alt="Carlina and Andrew Austin">
+                            <div class="mat-team-card-info">
+                                <h3>Carlina & Andrew Austin</h3>
+                                <p><strong>Married in:</strong> 2023</p>
+                                <p><strong>Number of Children:</strong> 1</p>
+                                <p><strong>Relevant Experience:</strong> Bring a fresh perspective and valuable financial expertise to the group.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 4: Q&A -->
+                <div class="mat-tab-panel" id="panel-4">
+                    <div class="mat-faq-container">
+                        <details class="mat-faq-item" open>
+                            <summary class="mat-faq-q">How far in advance should we really contact the parish?</summary>
+                            <div class="mat-faq-a">
+                                <p>We recommend <strong>8 to 12 months</strong> before your wedding. This allows ample time for the preparation process without any rush and helps ensure your preferred date is available.</p>
+                            </div>
+                        </details>
+                        <details class="mat-faq-item">
+                            <summary class="mat-faq-q">What if one of us isn't Catholic?</summary>
+                            <div class="mat-faq-a">
+                                <p>This is very common and welcome! A marriage between a Catholic and a baptized non-Catholic (or non-baptized person) is absolutely possible. Fr. James will discuss this with you during your initial meeting to ensure all your questions are answered.</p>
+                            </div>
+                        </details>
+                        <details class="mat-faq-item">
+                            <summary class="mat-faq-q">What does the $120 fee cover?</summary>
+                            <div class="mat-faq-a">
+                                <p>The $120 fee for the Marriage Preparation Weekend covers all your materials, books, as well as all food and refreshments throughout the weekend. There may be a separate stipend for the church and musician, which you can discuss with the parish office.</p>
+                            </div>
+                        </details>
+                        <details class="mat-faq-item">
+                            <summary class="mat-faq-q">Can we do our preparation here if we marry elsewhere?</summary>
+                            <div class="mat-faq-a">
+                                <p>Yes! As long as you are getting married at a Catholic church in Northwestern Ontario you can complete your marriage prep course at St. Agnes.</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="mat-cta-section">
+        <div class="mat-container">
+            <h2>Ready to Begin?</h2>
+            <p>We're here to help. Send us a note to get started!</p>
+            <a href="#" class="btn btn-cta">Contact The Parish Office</a>
+        </div>
+    </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.mat-tab-panel');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Get the target panel ID from data-tab attribute
+                const targetPanelId = button.dataset.tab;
+                const targetPanel = document.getElementById(targetPanelId);
+
+                // Deactivate all buttons and panels
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('is-active');
+                });
+                tabPanels.forEach(panel => {
+                    panel.classList.remove('is-active');
+                });
+
+                // Activate the clicked button and target panel
+                button.classList.add('is-active');
+                if (targetPanel) {
+                    targetPanel.classList.add('is-active');
+                }
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>
+
